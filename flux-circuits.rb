@@ -18,7 +18,7 @@ class FluxCircuits < Formula
   
   # Build from source (GitHub repository)
   url "https://github.com/shyamalschandra/idea2circuit/archive/refs/tags/v#{version}.tar.gz"
-  sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+  sha256 "a695e2ac1ca76f11a7118602fce44472cd35a0d71b58207dd4dae74946496b99"
   
   def install
     # Debug: Print current directory and contents
