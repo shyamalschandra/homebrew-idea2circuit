@@ -21,6 +21,10 @@ class FluxCircuits < Formula
   sha256 :no_check  # Will be calculated automatically on first install
   
   def install
+    # GitHub archives extract to a versioned directory (e.g., idea2circuit-0.0.1)
+    # Find and cd into that directory
+    cd Dir["idea2circuit-*"].first
+    
     # Install all dependencies (needed for build)
     system "npm", "ci"
     
