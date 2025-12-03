@@ -23,13 +23,16 @@ class FluxCircuits < Formula
   def install
     # GitHub archives extract to a versioned directory (e.g., idea2circuit-0.0.1)
     # Find and cd into that directory
-    extracted_dir = Dir.glob("idea2circuit-*").find { |d| File.directory?(d) }
-    if extracted_dir.nil?
-      # Fallback: try to find any directory that contains idea-to-circuit.zsh
-      extracted_dir = Dir.glob("*").find { |d| File.directory?(d) && File.exist?(File.join(d, "idea-to-circuit.zsh")) }
+    # Check if we're already in the right directory
+    unless File.exist?("idea-to-circuit.zsh")
+      extracted_dir = Dir.glob("idea2circuit-*").find { |d| File.directory?(d) }
+      if extracted_dir.nil?
+        # Fallback: try to find any directory that contains idea-to-circuit.zsh
+        extracted_dir = Dir.glob("*").find { |d| File.directory?(d) && File.exist?(File.join(d, "idea-to-circuit.zsh")) }
+      end
+      raise "Could not find extracted directory. Current dir: #{Dir.pwd}, Contents: #{Dir.glob('*').inspect}" unless extracted_dir
+      cd extracted_dir
     end
-    raise "Could not find extracted directory" unless extracted_dir
-    cd extracted_dir
     
     # Install all dependencies (needed for build)
     system "npm", "ci"
