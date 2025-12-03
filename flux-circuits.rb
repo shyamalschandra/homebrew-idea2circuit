@@ -33,7 +33,7 @@ class FluxCircuits < Formula
   # Run: shasum -a 256 flux-circuits-universal.tar.gz
   # Note: This will be updated after the GitHub release is created with proper universal binary
   # Update this value after creating a GitHub release
-  sha256 "PLACEHOLDER_SHA256_UPDATE_AFTER_RELEASE"
+  sha256 "0f0d0e64530ab96b95c6ec0ec656a0fb53a4a9ebd457feb09907eed48293e3e3"
   
   def install
     # Install the zsh script
