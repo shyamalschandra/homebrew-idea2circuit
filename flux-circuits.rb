@@ -24,6 +24,7 @@ class FluxCircuits < Formula
     # GitHub archives extract to a versioned directory (e.g., idea2circuit-0.0.1)
     # Find and cd into that directory
     extracted_dir = Dir.glob("idea2circuit-*").find { |d| File.directory?(d) }
+    raise "Could not find extracted directory" unless extracted_dir
     cd extracted_dir
     
     # Install all dependencies (needed for build)
