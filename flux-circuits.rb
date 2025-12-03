@@ -1,5 +1,5 @@
 # Homebrew formula for Flux Circuits
-# This formula downloads pre-built binaries from GitHub Releases
+# This formula builds from source from the GitHub repository
 # To use this formula, place it in your Homebrew tap repository:
 # https://github.com/shyamalschandra/homebrew-idea2circuit
 
@@ -16,26 +16,20 @@ class FluxCircuits < Formula
   depends_on "node"
   depends_on "gcc"
   
-  # Determine architecture
-  if Hardware::CPU.arm?
-    arch = "arm64"
-  else
-    arch = "x86_64"
-  end
-  
-  # Use universal binary if available, otherwise fall back to architecture-specific
-  # Update these URLs after creating a GitHub release
-  url "https://github.com/shyamalschandra/idea2circuit/releases/download/v#{version}/flux-circuits-universal.tar.gz"
-  # Alternative: use architecture-specific binary
-  # url "https://github.com/shyamalschandra/idea2circuit/releases/download/v#{version}/flux-circuits-#{arch}.tar.gz"
-  
-  # Calculate SHA256 after creating the release
-  # Run: shasum -a 256 flux-circuits-universal.tar.gz
-  # Note: This will be updated after the GitHub release is created with proper universal binary
-  # Update this value after creating a GitHub release
-  sha256 "0f0d0e64530ab96b95c6ec0ec656a0fb53a4a9ebd457feb09907eed48293e3e3"
+  # Build from source (GitHub repository)
+  url "https://github.com/shyamalschandra/idea2circuit/archive/refs/tags/v#{version}.tar.gz"
+  sha256 :no_check  # Will be calculated automatically on first install
   
   def install
+    # Install all dependencies (needed for build)
+    system "npm", "ci"
+    
+    # Build TypeScript
+    system "npm", "run", "build"
+    
+    # Prune to production dependencies only
+    system "npm", "prune", "--production"
+    
     # Install the zsh script
     bin.install "idea-to-circuit.zsh"
     
@@ -49,7 +43,7 @@ class FluxCircuits < Formula
     libexec.install "package.json"
     libexec.install "tsconfig.json"
     
-    # Install node_modules (pre-installed dependencies)
+    # Install node_modules (production dependencies)
     libexec.install "node_modules"
     
     # Install .env.example template
