@@ -23,7 +23,8 @@ class FluxCircuits < Formula
   def install
     # GitHub archives extract to a versioned directory (e.g., idea2circuit-0.0.1)
     # Find and cd into that directory
-    cd Dir["idea2circuit-*"].first
+    extracted_dir = Dir.glob("idea2circuit-*").select { |d| File.directory?(d) }.first
+    cd extracted_dir if extracted_dir
     
     # Install all dependencies (needed for build)
     system "npm", "ci"
